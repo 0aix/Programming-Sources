@@ -1,0 +1,1 @@
+It's probably impossible to understand what this is for. Try visiting clickcritters.com. There are many minigames that a bot can play. 
