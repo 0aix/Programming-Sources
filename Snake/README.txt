@@ -1,0 +1,1 @@
+A simple game drawn on the device context of a transparent overlay
