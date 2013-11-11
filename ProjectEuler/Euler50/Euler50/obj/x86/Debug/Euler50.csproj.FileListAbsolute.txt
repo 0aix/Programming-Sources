@@ -1,0 +1,5 @@
+C:\Users\Julie\Desktop\ProjectEuler\Euler50\Euler50\bin\Debug\Euler50.exe
+C:\Users\Julie\Desktop\ProjectEuler\Euler50\Euler50\bin\Debug\Euler50.pdb
+C:\Users\Julie\Desktop\ProjectEuler\Euler50\Euler50\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Julie\Desktop\ProjectEuler\Euler50\Euler50\obj\x86\Debug\Euler50.exe
+C:\Users\Julie\Desktop\ProjectEuler\Euler50\Euler50\obj\x86\Debug\Euler50.pdb

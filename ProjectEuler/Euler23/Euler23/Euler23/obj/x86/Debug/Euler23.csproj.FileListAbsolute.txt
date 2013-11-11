@@ -1,0 +1,5 @@
+C:\Users\Julie\Desktop\ProjectEuler\Euler23\Euler23\Euler23\bin\Debug\Euler23.exe
+C:\Users\Julie\Desktop\ProjectEuler\Euler23\Euler23\Euler23\bin\Debug\Euler23.pdb
+C:\Users\Julie\Desktop\ProjectEuler\Euler23\Euler23\Euler23\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Julie\Desktop\ProjectEuler\Euler23\Euler23\Euler23\obj\x86\Debug\Euler23.exe
+C:\Users\Julie\Desktop\ProjectEuler\Euler23\Euler23\Euler23\obj\x86\Debug\Euler23.pdb

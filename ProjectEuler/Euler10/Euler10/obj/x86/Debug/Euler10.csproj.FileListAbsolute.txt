@@ -1,0 +1,6 @@
+C:\Users\Julie\Desktop\ProjectEuler\Euler10\Euler10\bin\Debug\Euler10.exe
+C:\Users\Julie\Desktop\ProjectEuler\Euler10\Euler10\bin\Debug\Euler10.pdb
+C:\Users\Julie\Desktop\ProjectEuler\Euler10\Euler10\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Julie\Desktop\ProjectEuler\Euler10\Euler10\obj\x86\Debug\Euler10.exe
+C:\Users\Julie\Desktop\ProjectEuler\Euler10\Euler10\obj\x86\Debug\Euler10.pdb
+C:\Users\Julie\Desktop\ProjectEuler\Euler10\Euler10\bin\Debug\Euler10.exe.config
