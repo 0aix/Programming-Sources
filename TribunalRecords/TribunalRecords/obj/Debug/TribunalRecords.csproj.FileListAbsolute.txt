@@ -1,0 +1,8 @@
+c:\users\brian\Desktop\TribunalRecords\TribunalRecords\bin\Debug\TribunalRecords.exe.config
+c:\users\brian\Desktop\TribunalRecords\TribunalRecords\bin\Debug\TribunalRecords.exe
+c:\users\brian\Desktop\TribunalRecords\TribunalRecords\bin\Debug\TribunalRecords.pdb
+c:\users\brian\Desktop\TribunalRecords\TribunalRecords\bin\Debug\Newtonsoft.Json.dll
+c:\users\brian\Desktop\TribunalRecords\TribunalRecords\obj\Debug\TribunalRecords.csprojResolveAssemblyReference.cache
+c:\users\brian\Desktop\TribunalRecords\TribunalRecords\obj\Debug\TribunalRecords.exe
+c:\users\brian\Desktop\TribunalRecords\TribunalRecords\obj\Debug\TribunalRecords.pdb
+C:\Users\brian\Desktop\TribunalRecords\TribunalRecords\bin\Debug\MySql.Data.dll
