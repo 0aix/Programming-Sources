@@ -9,10 +9,11 @@ bool tubi = false;
 bool mesofilter = false;
 bool mining = false;
 bool kamiloot = false;
-bool pgm = false;
+bool fgm = false;
 bool freeze = false;
 bool deaggro = false;
-
+bool gnd = false;
+/*
 //Packet Structure
 struct COutPacket
 {
@@ -125,10 +126,10 @@ bool RecvPacket(vector<BYTE> vData)
 		return false;
 	}
 	return true;
-}
+}*/
 
 //8B 44 24 ? 3D ? ? ? ? 0F 8F ? ? ? ? 0F 84 ? ? ? ? 8D 90 ? ? ? ? 83 FA
-DWORD PacketEntry = 0x014714D0;
+DWORD PacketEntry = 0x018929A8;
 DWORD PacketHookRet = *(DWORD*)(PacketEntry);
 DWORD FilterArray = 0;
 DWORD FilterArrayEnd = 0;
@@ -300,9 +301,9 @@ __declspec(naked) void PacketHook()
 	__asm
 	{
 		mov eax, dword ptr [esp+0x04]
-		cmp eax, 0x000001E1
+		cmp eax, 0x0000021F
 		je Mining
-		cmp eax, 0x00000256
+		cmp eax, 0x000002B4
 		je Filter
 
 Return:
@@ -367,14 +368,14 @@ void TogglePacket()
 	VirtualProtect((void*)(PacketEntry), 4, protect, new DWORD);
 }
 
-DWORD Entry = 0x016B6D2C;
+DWORD Entry = 0x01B5D534;
 DWORD HookRet = *(DWORD*)(Entry);
-DWORD Exit1 = 0x005DEBD2;
-DWORD Exit2 = 0x005DEA27;
-DWORD Call1 = 0x00793E50;
-DWORD Call2 = 0x01040800;
-DWORD ExitCall = 0x005DD330;
-DWORD TubiExit = 0x005DEBBA;
+DWORD Exit1 = 0x00693222;
+DWORD Exit2 = 0x00693077;
+DWORD Call1 = 0x00899710;
+DWORD Call2 = 0x013251C0;
+DWORD ExitCall = 0x00691700;
+DWORD TubiExit = 0x0069320A;
 DWORD Item = 0;
 DWORD ItemX = 0;
 DWORD ItemY = 0;
@@ -387,16 +388,25 @@ __declspec(naked) void Hook()
 {
 	__asm
 	{
-		cmp dword ptr [esp], 0x005DEB3C //Item Return Hook Address
+		cmp dword ptr [esp], 0x0069318C //Item Return Hook Address
 		jne Return
 		cmp [kamiloot], 0x00
 		je HookEnd
 		cmp [Kami], 0x01
 		je HookEnd
+		mov eax, dword ptr [esi+0x34]
+		test eax, eax
+		je HookXY
+		mov eax, dword ptr [esi+0x38]
+		test eax, eax
+		jne HookXY
+		ret 0x000C
+
+HookXY:
 		mov eax, dword ptr [esp+0x08]
 		mov dword ptr [ItemX], eax
 		mov eax, dword ptr [esp+0x0C]
-		add eax, 0x0B
+		add eax, 0x0A
 		mov dword ptr [ItemY], eax
 		mov [Kami], 0x01
 
@@ -416,10 +426,10 @@ ReturnHook:
 Continue:
 		cmp [PickUp], 0x00000001
 		jne ExitCode
-		cmp dword ptr [esi+0x30], 0x00
+		cmp dword ptr [esi+0x34], 0x00
 		jne JMP1
-		mov eax, dword ptr [esi+0x34]
-		mov ecx, 0x016A1EA0
+		mov eax, dword ptr [esi+0x38]
+		mov ecx, 0x01B44CB0
 		mov ecx, dword ptr [ecx]
 		push eax
 		call dword ptr [Call1]
@@ -429,7 +439,7 @@ JMP1:
 		xor eax, eax
 
 JMP2:
-		mov ecx, dword ptr [esi+0x20]
+		mov ecx, dword ptr [esi+0x24]
 		mov edx, dword ptr [esp+0x4C]
 		push eax
 		push ecx
@@ -438,10 +448,10 @@ JMP2:
 		call dword ptr [Call2]
 		cmp [tubi], 0x00
 		je TubiExitCode
-		mov eax, 0x016A2230 //Server Base = Char Base - 0x04
+		mov eax, 0x01B450AC //Server Base - 8B 2D ? ? ? ? A1 ? ? ? ? 8D ? 24 ? ? 8B
 		mov eax, dword ptr [eax]
-		mov dword ptr [eax+0x00002138], 0x00 //Tubi Offset - 83 ? ? ? ? ? 00 75 ? 83 7C ? ? 00 75 ? 8B ? ? ? ? ? 8B ? ? 51 83 C0 ? 50
-		mov dword ptr [eax+0x0000213C], 0x00 //Global Delay Offset - Tubi Offset + 4
+		mov dword ptr [eax+0x00002148], 0x00 //Tubi Offset - 83 ? ? ? ? ? 00 75 ? 83 7C ? ? 00 75 ? 8B ? ? ? ? ? 8B ? ? 51 83 C0 ? 50
+		mov dword ptr [eax+0x0000214C], 0x00 //Global Delay Offset - Tubi Offset + 4
 
 TubiExitCode:
 		mov [Kami], 0x00
@@ -484,20 +494,18 @@ void UpdateFilter()
 	}
 }
 
-DWORD MovementEntry = 0x016B6D88;
+DWORD MovementEntry = 0x01B5D590; //GetFocus
 DWORD MovementHookRet = *(DWORD*)(MovementEntry);
-DWORD MovementExit = 0x00FE139D;
-DWORD* CharInfoBase = (DWORD*)0x016A2234; //8B 3D ? ? ? ? 8B 40
-DWORD SetData = 0x00518EE0; //56 8B ? 8B ? ? ? ? ? 41 [3rd Result]
-DWORD LockX = 0;
-DWORD LockY = 0;
+DWORD MovementExit = 0x0129A061;
+DWORD* CharInfoBase = (DWORD*)0x01B450B4; //8B 3D ? ? ? ? 8B 40
+DWORD SetData = 0x005B9500; //56 8B ? 8B ? ? ? ? ? 41 [4th Result]
 //Attack Count  - 89 ? ? ? 00 00 C7 ? ? ? 00 00 ? 00 00 00 89 ? ? ? 00 00 89 ? ? ? 00 00 89 ? ? ? 00 00 C7 ? ? ? 00 00 ? 00 00 00 89 ? ? ? 00 00 8D
 
 __declspec(naked) void MovementHook()
 {
 	__asm
 	{
-		cmp dword ptr [esp], 0x00FE139D
+		cmp dword ptr [esp], 0x0129A061
 		jne Return
 		mov dword ptr [esp], offset ReturnHook
 
@@ -509,37 +517,33 @@ ReturnHook:
 		jne UA
 		push eax
 		mov eax, dword ptr [ItemX]
-		mov dword ptr [LockX], eax
 		push eax
 		mov ecx, dword ptr [CharInfoBase]
 		mov ecx, dword ptr [ecx]
-		lea ecx, [ecx+0x00008AB8]
+		lea ecx, [ecx+0x0000A344] //8D 8E ? ? ? ? C7 44 24 14 0A 00 00 00 E8 ? ? ? ? 68
 		call dword ptr [SetData]
 		mov eax, dword ptr [ItemY]
-		mov dword ptr [LockY], eax
 		push eax
 		mov ecx, dword ptr [CharInfoBase]
 		mov ecx, dword ptr [ecx]
-		lea ecx, [ecx+0x00008AAC]
+		lea ecx, [ecx+0x0000A338] //TeleportX - 0x0C
 		call dword ptr [SetData]
 		push 0x01
 		mov ecx, dword ptr [CharInfoBase]
 		mov ecx, dword ptr [ecx]
-		lea ecx, [ecx+0x00008A94]
+		lea ecx, [ecx+0x0000A320] //TeleportY - 0x18 or TeleportX - 0x24
 		call dword ptr [SetData]
 		mov [KamiLock], 0x00
 		pop eax
 
 UA:
 		push ecx
-		//
-		mov ecx, 0x016A2230
+		mov ecx, 0x01B450AC
 		mov ecx, dword ptr [ecx]
-		mov dword ptr [ecx+0x0000213C], 0x00
-		//
+		mov dword ptr [ecx+0x0000214C], 0x00
 		mov ecx, dword ptr [CharInfoBase]
 		mov ecx, dword ptr [ecx]
-		add ecx, 0x00008CF8
+		add ecx, 0x0000A560
 		cmp dword ptr [ecx], 0x50
 		jl ExitCode
 		mov dword ptr [ecx], 0x00000000
@@ -550,29 +554,95 @@ ExitCode:
 	}
 }
 
-DWORD GNDEntry = 0x01690F94;
+DWORD GNDEntry = 0x01B2BA64;
 DWORD GNDHookRet = *(DWORD*)(GNDEntry);
-DWORD GNDExit = 0x00F0D4A0;
+DWORD GNDExit = 0x0119BCAD;
+DWORD GNDCall1 = 0x0056AF70;
+DWORD GNDCall2 = 0x0068AC80;
+DWORD GNDCall3 = 0x011DB9D0;
+DWORD GNDCall4 = 0x012288C0;
 
-//E8 ? ? ? ? 50 8D 8D ? ? ? ? E8 ? ? ? ? C6 45 FC 03 8D 8D ? ? ? ? E8 ? ? ? ? 89 45 D8
+//89 45 ? 8B ? ? ? FF FF 8B ? 8B 8D ? ? FF FF 8B 42 ? ? ? ? E8 ? ? ? ? ? ? ? 85 ? ? ? 8B
 __declspec(naked) void GNDHook()
 {
 	__asm
 	{
-		cmp dword ptr [esp+0x2C], 0x00F0D4A0
+		cmp dword ptr [esp+0x2C], 0x0119BBC7
 		jne Return
 		mov dword ptr [esp+0x2C], offset ReturnHook
 Return:
 		jmp dword ptr [GNDHookRet]
 
 ReturnHook:
+		mov dword ptr [ebp-0x28],eax
+		mov eax, dword ptr [ebp-0x00002D78]
+		mov edx, dword ptr [eax]
+		mov ecx, dword ptr [ebp-0x00002D78]
+		mov eax, dword ptr [edx+0x68]
+		call eax
 		push eax
-		movzx eax, byte ptr [ebp-0x00003598]
+		call dword ptr [GNDCall1]
+		add esp, 0x04
+		test eax, eax
+		je JMP1
+		mov ecx, dword ptr [ebp-0x00000234]
+		push ecx
+		mov ecx, dword ptr [ebp-0x70]
+		call dword ptr [GNDCall2]
+		test eax, eax
+		je JMP1
+		mov dword ptr [ebp-0x00002D8C], 0x00000001
+		jmp JMP2
+
+JMP1:
+		mov [ebp-0x00002D8C], 0x00000000
+
+JMP2:
+		mov edx, dword ptr [ebp-0x00002D8C]
+		mov dword ptr [ebp-0x50], edx
+		mov eax, dword ptr [ebp-0x00000234]
+		push eax
+		mov ecx, dword ptr [ebp-0x00002D78]
+		call dword ptr [GNDCall3]
+		mov dword ptr [ebp-0x00000248], eax
+		cmp dword ptr [ebp+0x10], 0x00
+		je JMP3
+		mov ecx, dword ptr [ebp+0x10]
+		mov dword ptr [ecx], 0x00000041
+
+JMP3:
+		call dword ptr [GNDCall4]
+		mov dword ptr [ebp-0x00000150], eax
+		mov ecx, dword ptr [ebp-0x00002D78]
+		add ecx, 0x04
+		mov edx, dword ptr [ebp-0x00002D78]
+		mov eax, dword ptr [edx+0x04]
+		mov edx, dword ptr [eax+0x20]
+		call edx
+		mov dword ptr [ebp-0x00000270], eax
+		cmp dword ptr [ebp-0x00000234], 0x00
+		je JMP4
+		mov eax, dword ptr [ebp-0x00002D78]
+		mov ecx, dword ptr [ebp-0x00000234]
+		cmp ecx, dword ptr [eax+0x0000A2AC]
+		jne JMP4
+		mov dword ptr [ebp-0x00002D90], 0x00000001
+		jmp JMP5
+
+JMP4:
+		mov dword ptr [ebp-0x00002D90], 0x00000000
+
+JMP5:
+		mov edx, dword ptr [ebp-0x00002D90]
+		mov dword ptr [ebp-0x68], edx
+		mov eax, dword ptr [ebp-0x00000234]
+		push eax
+		movzx eax, byte ptr [ebp-0x00002D90]
 		neg eax
 		sbb eax, eax
 		add eax, 0x01
-		mov byte ptr [ebp-0x00003598], al
-		mov byte ptr [ebp-0x54], al
+		mov byte ptr [ebp-0x00002D90], al
+		mov byte ptr [ebp-0x68], al
 		pop eax
 		jmp dword ptr [GNDExit]
 	}
@@ -586,33 +656,48 @@ void ToggleGND()
 	VirtualProtect((void*)(GNDEntry), 4, protect, new DWORD);
 }
 
-DWORD MCEntry = 0x012C609C;
+DWORD MCEntry = 0x0161A0B0;
 DWORD MCHookRet = *(DWORD*)(MCEntry);
-DWORD MCExit = 0x00FDAB06;
-DWORD PGMExit1 = 0x00F38960;
-DWORD PGMExit2 = 0x00F39771;
-DWORD PGMCall1 = 0x012C6098;
-DWORD PGMCall2 = 0x0043E790;
+DWORD MCExit = 0x01292D46;
+DWORD PGMExit1 = 0x011CEAB0; 
+DWORD PGMExit2 = 0x011CF8D9;
+DWORD PGMCall1 = 0x0161A0AC;
+DWORD PGMCall2 = 0x00490F70;
+DWORD UMPExit = 0x1181170;
+DWORD UMPExit1 = 0x01181158;
+DWORD UMPCall1 = 0x004014D0;
+DWORD UMPCall2 = 0x00486E20;
+DWORD UMPCall3 = 0x0056AF40;
+DWORD UMPCall4 = 0x00657740;
+DWORD UMPCall5 = 0x00656180;
+DWORD UMPCall6 = 0x006603B0;
+DWORD UMPCall7 = 0x00660460;
 
-
-//Mob Control - E8 ? ? ? ? 8B 86 ? ? ? ? ? 00 01 00 00 00
-//Movement Offset - 83 BE ? ? 00 00 06 0F 85 ? ? 00 00 8B
+//UMP - 8B 44 24 64 8B 88 ? ? ? ? 51 05 ? ? ? ? 50 E8 ? ? ? ? 83 C4 ? 85 C0
+//Godmode - 85 C0 ? ? 55 FF 15 ? ? ? ? 85 DB ? ? 8B 13 8B 02 6A 01 8B CB FF D0 C7 ? ? ? ? ? ? ? ? ? ? 8D
+//Mob Control - E8 ? ? ? ? 8B 86 ? ? ? ? C7 00 01 00 00 00
+//Movement Offset - 83 BE ? ? ? ? 04 0F 85 ? ? ? ? 8B
 //Aggro Offset - Movement Offset + 0x08
 __declspec(naked) void MCHook()
 {
 	__asm
 	{
-		cmp dword ptr [esp], 0x00F3891F
+		cmp dword ptr [esp], 0x011CEA6F
 		je PGM
-		cmp dword ptr [esp+0x14], 0x00FDAB06
-		jne Return
+		cmp dword ptr [esp+0x14], 0x01292D46
+		jne Continue
 		mov dword ptr [esp+0x14], offset Freeze
+
+Continue:
+		cmp dword ptr [esp+0x14], 0x01181045
+		jne Return
+		mov dword ptr [esp+0x14], offset Unlimited
 
 Return:
 		jmp dword ptr [MCHookRet]
 
 PGM:
-		cmp [pgm], 0x01
+		cmp [fgm], 0x01
 		jne Return
 		mov dword ptr [esp], offset PGMHook
 		jmp dword ptr [MCHookRet]
@@ -623,19 +708,19 @@ PGMHook:
 		push ebp
 		mov eax, dword ptr [PGMCall1]
 		call dword ptr [eax]
-		test esi, esi
+		test ebx, ebx
 		je Godmode
-		mov edx, dword ptr [esi]
+		mov edx, dword ptr [ebx]
 		mov eax, dword ptr [edx]
 		push 0x01
-		mov ecx, esi
+		mov ecx, ebx
 		call eax
 
 Godmode:
-		mov dword ptr [esp+0x000000A4], 0x00000000
-		add ebx, 0x00002220
-		lea ecx, [edi+0x000063F4]
-		mov dword ptr [esp+0x2C], ebx
+		mov dword ptr [esp+0x000000B8], 0x00000000
+		lea ecx, [edi+0x00002230]
+		mov dword ptr [esp+0x20], ecx
+		lea ecx, [esi+0x00007A90]
 		call dword ptr [PGMCall2]
 		test eax, eax
 		je PGMExit
@@ -647,15 +732,102 @@ PGMExit:
 Freeze:
 		cmp [freeze], 0x01
 		jne Aggro
-		mov dword ptr [esi+0x00000318], 0x00000006
+		mov dword ptr [esi+0x00000340], 0x00000004
 
 Aggro:
 		cmp [deaggro], 0x01
-		jne Exit
-		mov dword ptr [esi+0x00000320], 0x00000000
+		jne ExitCode1
+		mov dword ptr [esi+0x00000348], 0x00000000
 		
-Exit:
+ExitCode1:
 		jmp dword ptr [MCExit]
+
+ExitCode2:
+		jmp dword ptr [UMPExit]
+
+Unlimited:
+		cmp [gnd], 0x01
+		jne ExitCode2
+		mov eax, dword ptr [esp+0x64]
+		mov ecx, dword ptr [eax+0x00001A00]
+		push ecx
+		add eax, 0x000019F8
+		push eax
+		call dword ptr [UMPCall1]
+		add esp, 0x08
+		test eax, eax
+		jne JMP1
+		mov eax, dword ptr [esp+0x5C]
+		mov edx, dword ptr [eax+0x3D]
+		push edx
+		add eax, 0x39
+		push eax
+		call dword ptr [UMPCall2]
+		movzx eax, ax
+		cwde
+		push eax
+		call dword ptr [UMPCall3]
+		add esp, 0x0C
+		test eax, eax
+		je JMP1
+		test ebp, ebp
+		je ExitJMP1
+		mov esi, dword ptr [ebp+0x00000174]
+		mov dword ptr [esp+0x2C], 0x00000000
+		mov byte ptr [esp+0x54], 0x03
+		test edi, edi
+		jle JMP2
+		cmp dword ptr [ebp+0x000001B4], 0x00
+		je JMP2
+		lea ecx, [esp+0x28]
+		push ecx
+		lea edx, [esp+0x6C]
+		push edx
+		lea ecx, [ebp+0x000001A8]
+		call dword ptr [UMPCall4]
+		test eax, eax
+		je JMP2
+		mov eax, dword ptr [esp+0x2C]
+		add esi, dword ptr [eax+0x3C]
+
+JMP2:
+		imul esi,edi
+		mov eax, 0xAE147AE1
+		imul esi
+		sar edx, 0x05
+		mov ecx, edx
+		shr ecx, 0x1F
+		add ecx, edx
+		add edi, ecx
+		test edi, edi
+		jg JMP3
+		xor edi, edi
+
+JMP3:
+		lea ecx, [esp+0x28]
+		mov byte ptr [esp+0x54], 0x02
+		call dword ptr [UMPCall5]
+
+JMP1:
+		test ebp, ebp
+		je JMP2
+		mov ebx, dword ptr [esp+0x68]
+		push ebx
+		mov ecx, ebp
+		call dword ptr [UMPCall6]
+		push ebx
+		mov ecx, ebp
+		mov esi, eax
+		call dword ptr [UMPCall7]
+		imul esi, edi
+		jnl JMP4
+
+JMP4:
+		xor edi, edi
+		jmp dword ptr [UMPExit]
+
+ExitJMP1:
+		jmp dword ptr [UMPExit1]
 	}
 }
 
@@ -663,96 +835,49 @@ void ToggleMC()
 {
 	unsigned long protect;
 	VirtualProtect((void*)(MCEntry), 4, PAGE_EXECUTE_READWRITE, &protect);
-	*(DWORD*)(MCEntry) = (pgm || freeze || deaggro) ? (DWORD)&MCHook : MCHookRet;
+	*(DWORD*)(MCEntry) = (fgm || freeze || deaggro || gnd) ? (DWORD)&MCHook : MCHookRet;
 	VirtualProtect((void*)(MCEntry), 4, protect, new DWORD);
 }
 
-DWORD CPUEntry = 0x012C631C;
-DWORD CPUHookRet = *(DWORD*)(CPUEntry);
-DWORD LoadTiles = 0x0080E710;
-DWORD LoadObjects = 0x008170D0;
-DWORD CPUExit1 = 0x00817981;
-DWORD CPUExit2 = 0x0086BC3E;
-DWORD CPUCall1 = 0x004076B0;
-DWORD CPUCall2 = 0x004019F0;
-DWORD CPUCall3 = 0x00404DD0;
-DWORD CPUCall4 = 0x00404E20;
+DWORD MGMEntry = 0x01892A30;
+DWORD MGMHookRet = *(DWORD*)(MGMEntry);
 
-//Background
-//8B CF E8 ? ? FF FF 8B CF E8 ? ? FF FF 8B CF E8 ? ? FF FF 8B CF E8 ? ? FF FF 8B CF E8 ? ? FF FF 8B CF
-//Skill Effects
-//85 FF 74 ? 83 7D ? 00 0F 85 ? ? 00 00 8B 4D [Up 7 Calls]
-//8B ? ? ? ? 2F 5D 20 00 //jne below above address
-__declspec(naked) void CPUHook()
+__declspec(naked) void MGMHook()
 {
 	__asm
 	{
-		cmp dword ptr [esp], 0x010C7201
-		je SetHook1
-		cmp dword ptr [esp], 0x004050E3
-		je SetHook2
-		jmp dword ptr [CPUHookRet]
-
-SetHook1:
-		cmp dword ptr [esp+0x000001E4], 0x0081796C
+		//Follow 4th call below
+		//55 8D ? ? ? 83 ? ? 6A ? 68 ? ? ? ? 64 ? ? ? ? ? 50 83 ? ? A1 ? ? ? ? 33 ? 89 ? ? 53 56 57 50 8D ? ? 64 ? ? ? ? ? 8B ? 8B ? ? ? ? ? 8B ? ? ? ? ? 51 [2nd Result]
+		//Address below 1st call (edx) from ^
+		cmp dword ptr [esp], 0x00983854
 		jne Return
-		mov dword ptr [esp+0x000001E4], offset ReturnHook1
-		jmp dword ptr [CPUHookRet]
-
-ReturnHook1:
-		mov ecx, edi
-		call dword ptr [LoadTiles]
-		mov ecx, edi
-		call dword ptr [LoadObjects]
-		jmp dword ptr [CPUExit1]
-
-SetHook2:
-		cmp dword ptr [esp+0x00000038], 0x0086BA3C
+		//Address below 4th call below
+		//55 8D ? ? ? 83 ? ? 6A ? 68 ? ? ? ? 64 ? ? ? ? ? 50 83 ? ? A1 ? ? ? ? 33 ? 89 ? ? 53 56 57 50 8D ? ? 64 ? ? ? ? ? 8B ? 8B ? ? ? ? ? 8B ? ? ? ? ? 51 [2nd Result]
+		cmp dword ptr [esp+0x4C], 0x0099F3CF
 		jne Return
-		mov dword ptr [esp+0x00000038], offset ReturnHook2
-		jmp dword ptr [CPUHookRet]
-
-ReturnHook2:
-		push eax
-		mov byte ptr [ebp-0x04], 0x0C
-		call dword ptr [CPUCall1]
-		mov edi, eax
-		add esp, 0x08
-		neg edi
-		sbb edi, edi
-		lea ecx, [ebp-0x44]
-		neg edi
-		call dword ptr [CPUCall2]
-		lea ecx, [ebp-0x14]
-		call dword ptr [CPUCall3]
-		lea ecx, [ebp-0x18]
-		call dword ptr [CPUCall4]
-		lea ecx, [ebp-0x54]
-		call dword ptr [CPUCall2]
-		lea ecx, [ebp-0x2C]
-		mov byte ptr [ebp-0x04], 0x00
-		call dword ptr [CPUCall2]
-		jmp dword ptr [CPUExit2]
+		//Address in 1st jne below
+		//55 8D ? ? ? 83 ? ? 6A ? 68 ? ? ? ? 64 ? ? ? ? ? 50 83 ? ? A1 ? ? ? ? 33 ? 89 ? ? 53 56 57 50 8D ? ? 64 ? ? ? ? ? 8B ? 8B ? ? ? ? ? 8B ? ? ? ? ? 51 [2nd Result]
+		mov dword ptr [esp+0x4C], 0x009A05CD
 
 Return:
-		jmp dword ptr [CPUHookRet]
+		jmp dword ptr [MGMHookRet]
 	}
 }
 
-void ToggleCPU()
+void ToggleMGM()
 {
 	unsigned long protect;
-	VirtualProtect((void*)(CPUEntry), 4, PAGE_EXECUTE_READWRITE, &protect);
-	*(DWORD*)(CPUEntry) = (*(DWORD*)(CPUEntry) == CPUHookRet) ? (DWORD)&CPUHook : CPUHookRet;
-	VirtualProtect((void*)(CPUEntry), 4, protect, new DWORD);
+	VirtualProtect((void*)(MGMEntry), 4, PAGE_EXECUTE_READWRITE, &protect);
+	*(DWORD*)(MGMEntry) = fgm ? (DWORD)&MGMHook : MGMHookRet;
+	VirtualProtect((void*)(MGMEntry), 4, protect, new DWORD);
 }
 
 void NoDelay()
 {
-	if (*(DWORD*)0x016A2230 != 0)
+	if (*(DWORD*)0x01B450AC != 0)
 	{
-		*(DWORD*)(*(DWORD*)0x016A2230 + 0x00002138) = 0;
-		*(DWORD*)(*(DWORD*)0x016A2230 + 0x0000213C) = 0;
+		*(DWORD*)(*(DWORD*)0x01B450AC + 0x00002148) = 0;
+		*(DWORD*)(*(DWORD*)0x01B450AC + 0x0000214C) = 0;
 	}
 }
 

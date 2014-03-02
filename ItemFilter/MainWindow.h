@@ -66,8 +66,8 @@ namespace ItemFilter {
 	private: System::Windows::Forms::CheckBox^  checkBox6;
 	private: System::Windows::Forms::CheckBox^  checkBox7;
 	private: System::Windows::Forms::CheckBox^  checkBox8;
-	private: System::Windows::Forms::CheckBox^  checkBox5;
-	private: System::Windows::Forms::CheckBox^  checkBox9;
+
+
 	private: System::Windows::Forms::CheckBox^  checkBox10;
 	private: System::Windows::Forms::CheckBox^  checkBox11;
 	private: System::Windows::Forms::Timer^  NDTimer;
@@ -102,8 +102,6 @@ namespace ItemFilter {
 			this->checkBox6 = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox7 = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox8 = (gcnew System::Windows::Forms::CheckBox());
-			this->checkBox5 = (gcnew System::Windows::Forms::CheckBox());
-			this->checkBox9 = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox10 = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox11 = (gcnew System::Windows::Forms::CheckBox());
 			this->NDTimer = (gcnew System::Windows::Forms::Timer(this->components));
@@ -216,16 +214,17 @@ namespace ItemFilter {
 			this->checkBox7->AutoSize = true;
 			this->checkBox7->Location = System::Drawing::Point(98, 188);
 			this->checkBox7->Name = L"checkBox7";
-			this->checkBox7->Size = System::Drawing::Size(50, 17);
+			this->checkBox7->Size = System::Drawing::Size(49, 17);
 			this->checkBox7->TabIndex = 11;
-			this->checkBox7->Text = L"PGM";
+			this->checkBox7->Text = L"FGM";
 			this->checkBox7->UseVisualStyleBackColor = true;
 			this->checkBox7->CheckedChanged += gcnew System::EventHandler(this, &MainWindow::checkBox7_CheckedChanged);
 			// 
 			// checkBox8
 			// 
 			this->checkBox8->AutoSize = true;
-			this->checkBox8->Location = System::Drawing::Point(12, 211);
+			this->checkBox8->Enabled = false;
+			this->checkBox8->Location = System::Drawing::Point(12, 165);
 			this->checkBox8->Name = L"checkBox8";
 			this->checkBox8->Size = System::Drawing::Size(76, 17);
 			this->checkBox8->TabIndex = 12;
@@ -233,32 +232,10 @@ namespace ItemFilter {
 			this->checkBox8->UseVisualStyleBackColor = true;
 			this->checkBox8->CheckedChanged += gcnew System::EventHandler(this, &MainWindow::checkBox8_CheckedChanged);
 			// 
-			// checkBox5
-			// 
-			this->checkBox5->AutoSize = true;
-			this->checkBox5->Enabled = false;
-			this->checkBox5->Location = System::Drawing::Point(12, 165);
-			this->checkBox5->Name = L"checkBox5";
-			this->checkBox5->Size = System::Drawing::Size(65, 17);
-			this->checkBox5->TabIndex = 9;
-			this->checkBox5->Text = L"Kami Fly";
-			this->checkBox5->UseVisualStyleBackColor = true;
-			// 
-			// checkBox9
-			// 
-			this->checkBox9->AutoSize = true;
-			this->checkBox9->Location = System::Drawing::Point(98, 211);
-			this->checkBox9->Name = L"checkBox9";
-			this->checkBox9->Size = System::Drawing::Size(48, 17);
-			this->checkBox9->TabIndex = 13;
-			this->checkBox9->Text = L"CPU";
-			this->checkBox9->UseVisualStyleBackColor = true;
-			this->checkBox9->CheckedChanged += gcnew System::EventHandler(this, &MainWindow::checkBox9_CheckedChanged);
-			// 
 			// checkBox10
 			// 
 			this->checkBox10->AutoSize = true;
-			this->checkBox10->Location = System::Drawing::Point(12, 234);
+			this->checkBox10->Location = System::Drawing::Point(10, 211);
 			this->checkBox10->Name = L"checkBox10";
 			this->checkBox10->Size = System::Drawing::Size(82, 17);
 			this->checkBox10->TabIndex = 14;
@@ -269,7 +246,7 @@ namespace ItemFilter {
 			// checkBox11
 			// 
 			this->checkBox11->AutoSize = true;
-			this->checkBox11->Location = System::Drawing::Point(98, 234);
+			this->checkBox11->Location = System::Drawing::Point(98, 211);
 			this->checkBox11->Name = L"checkBox11";
 			this->checkBox11->Size = System::Drawing::Size(71, 17);
 			this->checkBox11->TabIndex = 15;
@@ -286,14 +263,12 @@ namespace ItemFilter {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(183, 259);
+			this->ClientSize = System::Drawing::Size(183, 234);
 			this->Controls->Add(this->checkBox11);
 			this->Controls->Add(this->checkBox10);
-			this->Controls->Add(this->checkBox9);
 			this->Controls->Add(this->checkBox8);
 			this->Controls->Add(this->checkBox7);
 			this->Controls->Add(this->checkBox6);
-			this->Controls->Add(this->checkBox5);
 			this->Controls->Add(this->checkBox4);
 			this->Controls->Add(this->textBox2);
 			this->Controls->Add(this->checkBox3);
@@ -400,24 +375,22 @@ private:
 private: 
 	System::Void checkBox6_CheckedChanged(System::Object^  sender, System::EventArgs^  e) 
 	{
+		gnd = this->checkBox6->Checked;
 		ToggleGND();
+		ToggleMC();
 	}
 private: 
 	System::Void checkBox7_CheckedChanged(System::Object^  sender, System::EventArgs^  e) 
 	{
-		pgm = this->checkBox7->Checked;
+		fgm = this->checkBox7->Checked;
 		ToggleMC();
+		ToggleMGM();
 	}
 private: 
 	System::Void checkBox8_CheckedChanged(System::Object^  sender, System::EventArgs^  e) 
 	{
 		mining = this->checkBox8->Checked;
 		TogglePacket();
-	}
-private: 
-	System::Void checkBox9_CheckedChanged(System::Object^  sender, System::EventArgs^  e) 
-	{
-		ToggleCPU();
 	}
 private: 
 	System::Void checkBox10_CheckedChanged(System::Object^  sender, System::EventArgs^  e) 

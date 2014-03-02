@@ -1,11 +1,48 @@
-I decided to play Maplestory this summer, and I contributed a lot to hacking forums. 
+========================================================================
+    DYNAMIC LINK LIBRARY : ItemFilter Project Overview
+========================================================================
 
-This is a trainer I wrote that received over 6000 downloads. I stopped updating it once school had started. 
+AppWizard has created this ItemFilter DLL for you.
 
-Original Thread: http://www.gamekiller.net/global-maplestory-hacks-bots/3193603-gms-v140-1-item-filter-trainer-source-inside.html
+This file contains a summary of what you will find in each of the files that
+make up your ItemFilter application.
 
-**Googling "0aixz0r" covers most of my summer Maplestory hacking activities
 
-Most of the hacking is written in Assembly. Scripts were written through the use of Cheat Engine's debugger. 
+ItemFilter.vcxproj
+    This is the main project file for VC++ projects generated using an Application Wizard.
+    It contains information about the version of Visual C++ that generated the file, and
+    information about the platforms, configurations, and project features selected with the
+    Application Wizard.
 
-ItemFilter.png is a screenshot of the # of downloads.
+ItemFilter.vcxproj.filters
+    This is the filters file for VC++ projects generated using an Application Wizard. 
+    It contains information about the association between the files in your project 
+    and the filters. This association is used in the IDE to show grouping of files with
+    similar extensions under a specific node (for e.g. ".cpp" files are associated with the
+    "Source Files" filter).
+
+ItemFilter.cpp
+    This is the main DLL source file.
+
+	When created, this DLL does not export any symbols. As a result, it
+	will not produce a .lib file when it is built. If you wish this project
+	to be a project dependency of some other project, you will either need to
+	add code to export some symbols from the DLL so that an export library
+	will be produced, or you can set the Ignore Input Library property to Yes
+	on the General propert page of the Linker folder in the project's Property
+	Pages dialog box.
+
+/////////////////////////////////////////////////////////////////////////////
+Other standard files:
+
+StdAfx.h, StdAfx.cpp
+    These files are used to build a precompiled header (PCH) file
+    named ItemFilter.pch and a precompiled types file named StdAfx.obj.
+
+/////////////////////////////////////////////////////////////////////////////
+Other notes:
+
+AppWizard uses "TODO:" comments to indicate parts of the source code you
+should add to or customize.
+
+/////////////////////////////////////////////////////////////////////////////
