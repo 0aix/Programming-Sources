@@ -1,0 +1,6 @@
+c:\users\brian\Desktop\TaylorMacLaurinSeries\TaylorMacLaurinSeries\TaylorMacLaurinSeries\bin\x86\Debug\TaylorMacLaurinSeries.exe
+c:\users\brian\Desktop\TaylorMacLaurinSeries\TaylorMacLaurinSeries\TaylorMacLaurinSeries\bin\x86\Debug\TaylorMacLaurinSeries.pdb
+c:\users\brian\Desktop\TaylorMacLaurinSeries\TaylorMacLaurinSeries\TaylorMacLaurinSeries\obj\x86\Debug\TaylorMacLaurinSeries.csprojResolveAssemblyReference.cache
+c:\users\brian\Desktop\TaylorMacLaurinSeries\TaylorMacLaurinSeries\TaylorMacLaurinSeries\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+c:\users\brian\Desktop\TaylorMacLaurinSeries\TaylorMacLaurinSeries\TaylorMacLaurinSeries\obj\x86\Debug\TaylorMacLaurinSeries.exe
+c:\users\brian\Desktop\TaylorMacLaurinSeries\TaylorMacLaurinSeries\TaylorMacLaurinSeries\obj\x86\Debug\TaylorMacLaurinSeries.pdb

@@ -1,0 +1,5 @@
+c:\users\brian\Desktop\TaylorMacLaurinSeries\TaylorMacLaurinSeries\TaylorMacLaurinSeries\bin\x86\Release\TaylorMacLaurinSeries.exe
+c:\users\brian\Desktop\TaylorMacLaurinSeries\TaylorMacLaurinSeries\TaylorMacLaurinSeries\bin\x86\Release\TaylorMacLaurinSeries.pdb
+c:\users\brian\Desktop\TaylorMacLaurinSeries\TaylorMacLaurinSeries\TaylorMacLaurinSeries\obj\x86\Release\Microsoft.Xna.Framework.RuntimeProfile.txt
+c:\users\brian\Desktop\TaylorMacLaurinSeries\TaylorMacLaurinSeries\TaylorMacLaurinSeries\obj\x86\Release\TaylorMacLaurinSeries.exe
+c:\users\brian\Desktop\TaylorMacLaurinSeries\TaylorMacLaurinSeries\TaylorMacLaurinSeries\obj\x86\Release\TaylorMacLaurinSeries.pdb
